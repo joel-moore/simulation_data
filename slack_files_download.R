@@ -2,7 +2,7 @@
 ############## THIS IS THE ONLY THING YOU HAVE TO CHANGE ###########################################################
 
 #Insert slack token: replace the space between the quotation marks with the token you copied from your API page.
-token<-"____________________________"
+token<-"______________________________________"
 
 ####################################################################################################################
 
@@ -81,12 +81,6 @@ channels.names<-channels.txt %>% as.tbl_json %>%
 
 
 
-####DELETE THIS
-usr.url<-"https://slack.com/api/users.list?token="
-users.lst <- GET(paste(usr.url,token, sep=""),  verbose())
-users.txt <- content(users.lst, "text")
-###############
-
 
 #get list of groups
 groups.url<-"https://slack.com/api/groups.list?token="
@@ -110,6 +104,7 @@ files.urls <- (merge(group.names, files.urls, by = "groups"))
 files.urls<-files.urls[c(1,4,7,8,9,12,13,14)]
 
 
+bearertoken<-paste("Bearer",token,sep=' ')
 
 #seperate Slack and other docs
 otherfiles<-files.urls[grep("slack", files.urls$url_private,invert=TRUE), ]
@@ -123,8 +118,8 @@ name<-row["name.y"]
 id<-row["id"]
 filetype<-row["filetype"]
 timestamp<-row["timestamp"]
-    GET(url_private, add_headers(Authorization = paste("Bearer",token,sep=' '),
-        write_disk(paste(timestamp,"_",groupname,"_",name,".",filetype, sep='')))
+    GET(url_private, add_headers(Authorization = bearertoken),
+        write_disk(paste(timestamp,"_grn_",groupname,"_nam_",name,".",filetype, sep='')))
 })
 
 
