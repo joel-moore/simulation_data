@@ -30,4 +30,9 @@ pdftxt$time<-anytime(pdftxt$ts)
 pdftxt$name.x<-pdftxt$group
 
 pdftxt<-pdftxt[c(2,3,6,7,8,9)]
+
+#added the below to deal with files with more text than excel can handle in a single cell
+pdftxt$text2<-str_sub(pdftxt$text,start=30000)
+str_sub(pdftxt$text,start=30000)<-"";pdftxt
+
 write.csv(pdftxt, "pdftxt.csv", row.names=T)
